@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Control Geocoder</title>
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no initial-scale=1, maximum-scale=1"
+    />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
+
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js" integrity="sha512-FW2A4pYfHjQKc2ATccIPeCaQpgSQE1pMrEsZqfHNohWKqooGsMYCo3WOJ9ZtZRzikxtMAJft+Kz0Lybli0cbxQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" integrity="sha512-eD3SR/R7bcJ9YJeaUe7KX8u8naADgalpY/oNJ6AHvp1ODHF3iR8V9W4UgU611SD/jI0GsFbijyDBAzSOg+n+iQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style type="text/css">
+      body {
+        margin: 0;
+      }
+      #map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-content {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  animation: rollup 0.5s ease-out forwards;
+}
+
+.overlay-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  margin: 6px;
+  border: 6px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rollup {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+    </style>
+  </head>
+  <body>
+   
+    
+    <div id="map"></div>
+
+    <script type="text/javascript">
+
+    	var map = L.map('map').setView([51.505, -0.09], 13);
+		var geocoder = L.Control.Geocoder.nominatim();
+		var lat = 0
+		var lon = 0
+		var marker;
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+          maxZoom: 18
+        }).addTo(map);
+
+	// 	 map.locate({setView: true, watch: false}) /* This will return map so you can do chaining */
+    //     .on('locationfound', function(e){
+    //         var marker = L.marker([e.latitude, e.longitude]).bindPopup('Your are here :)');
+    //         // var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
+    //         //     weight: 1,
+    //         //     color: 'blue',
+    //         //     fillColor: '#cacaca',
+    //         //     fillOpacity: 0.2
+    //         // });
+	// 		lat = e.latitude
+	// 		lon = e.longitude
+	// 		console.log(lon, lat)
+    //         map.addLayer(marker);
+    //         // map.addLayer(circle);
+    //     })
+    //    .on('locationerror', function(e){
+    //         console.log(e);
+    //         alert("Location access denied.");
+    //     });
+
+        var control = L.Routing.control({
+        waypoints: [
+        L.latLng(-36.888, 174.68),
+        L.latLng(-36.88865571755099 , 174.68566755555258 )
+        ],
+        routeWhileDragging: true,
+        lineOptions: {
+          styles: [
+            {color: 'black', opacity: 0.15, weight: 9},
+            {color: 'white', opacity: 0.8, weight: 6},
+            {color: 'red', opacity: 1, weight: 2}
+          ]
+          }
+        }).addTo(map);
+
+      control.show();
+		
+	  map.on('click', function(e) {
+        geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+          var r = results[0];
+          if (r) {
+            if (marker) {
+				console.log(`${r.center.lat} - - ${r.center.lng}`)
+              marker
+                .setLatLng(r.center)
+                .setPopupContent(r.html || r.name)
+                .openPopup();
+            } else {
+              marker = L.marker(r.center)
+                .bindPopup(r.name)
+                .addTo(map)
+                .openPopup();
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

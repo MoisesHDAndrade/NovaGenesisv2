@@ -1,0 +1,486 @@
+
+<!doctype html>
+{% load static %}
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="utf-8">
+    <title>Genesis Timesheet</title>
+    <meta name="description" content="Invoice demo sample">
+    <meta name="author" content="">
+    <style>
+
+      @charset "UTF-8";
+      @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css");
+      @import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css");
+     
+     
+      @page { 
+          size: A4 landscape; margin: 0px; 
+          @bottom-right {
+            color: #a9a;
+            content: "Page " counter(page) "/" counter(pages);
+            font-size: 9pt;
+            margin-top: -15px;
+            margin-right: 5px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+         
+          }
+         
+          html {
+            color: #14213d;
+            font-family: Source Sans Pro;
+            
+            line-height: 1.6; }
+            html body {
+          margin: 0;
+          padding: 0 }
+          html h1 {
+            color: #4E7CA0;
+            font-family: Montserrat;
+            font-size: 40pt;
+            margin: 0; 
+            }
+          html h2 {
+          color: #4E7CA0;
+          font-family: Montserrat;
+          font-size: 30pt;
+          margin: 0; 
+          }
+          html aside {
+            display: flex;
+            margin: 2em 0 4em; 
+            }
+          html aside address {
+            font-style: normal;
+            white-space: pre-line; 
+            }
+            html aside address#from {
+              color: #a9a;
+              flex: 1; 
+              }
+            html aside address#to {
+              text-align: right; 
+              }
+        html dl {
+          text-align: right;
+          position: absolute;
+          right: 0;
+          top: 0; 
+          }
+          html dl dt, html dl dd {
+            display: inline;
+            margin: 0; 
+            }
+          html dl dt {
+            color: #a9a; 
+            }
+            html dl dt::before {
+              content: '';
+              display: block; 
+              }
+            html dl dt::after {
+              content: ':'; 
+              }
+        html table {
+          border-collapse: collapse;
+          width: 100%; 
+          }
+        html table th {
+            border-bottom: .2mm solid #a9a;
+            color: #4A3949;
+            font-size: 8pt;
+            font-weight: 400;
+            
+            text-transform: uppercase; 
+            }
+
+          html table td {
+            padding-top: 0px;
+            font-size: 0.7rem; 
+          }
+          html table td:first-of-type {
+              color: #4E7CA0;
+              font-weight: bold;
+              text-align: left;
+              
+              }
+
+          html table th, html table td {
+            text-align: center; 
+            }
+
+            html table th:first-of-type, html table td:first-of-type {
+              text-align: left; 
+              }
+
+            html table th:last-of-type, html table td:last-of-type {
+              text-align: center; 
+              }
+
+          html table#total {
+            background: #3f3f3f;
+            border-color: #f6f6f6;
+            border-style: solid;
+            border-width: 2cm 3cm;
+            bottom: 0;
+            font-size: 20pt;
+            margin: 0 -3cm;
+            position: absolute;
+            width: 18cm; 
+            }
+
+          .black-color{
+            color: #000000;
+          }
+          .white-color{
+            color: #ffffff;
+          }
+          .brown-color{
+            color: #4A3949;
+          }
+          .big-font{
+            font-size:30px;
+          }
+          .medium-font{
+            font-size:20px;
+          }
+          .pt-0{
+            padding-top: 0px;
+          }
+          .pb-0{
+            padding-bottom: 0px;
+          }
+          .mt-0{
+            margin-top: 0px;
+          }
+          .mt-3{
+            margin-top:30px;
+          }
+          .mb-0{
+            margin-bottom: 0px;
+          }
+          .mr-3{
+            margin-right: 30px;
+          }
+          .mr-1{
+            margin-right: 10px;
+          }
+
+          .circle{
+            padding-top: 0px;
+            margin-top: 0px;
+            height: 100px;
+            width: 100%;
+            border-radius: 0%;
+            background-color: #263238;
+          }
+          .circle h1{
+            padding-top: 30px;
+            padding-left:22px;
+            padding-bottom: 30px;
+            color:white; 
+            font-family: 'mo'
+          }
+          .circle h2{
+            padding-left: 25px
+          }
+          .rodape{
+            display: grid;
+            align-self: end;
+          }
+
+          #header-row{
+            background-color: #ffffff;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%23ffffff' stroke-width='.5' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23fcfcfc' href='%23s' y='2'/%3E%3Cuse fill='%23fcfcfc' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23fafafa' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23fafafa' href='%23s'/%3E%3Cuse fill='%23f7f7f7' href='%23s' x='2'/%3E%3Cuse fill='%23f7f7f7' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23f5f5f5'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23f5f5f5'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23f2f2f2'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23ffffff'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23efefef'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23F60'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23F60'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23F60'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-size: cover;
+          
+        }
+
+        #header-col{
+            content: "";
+            background-image: url('https://i.ibb.co/F5Dsbxd/logo-grey.png');
+            /* background-image: url("{% static 'dist/img/logo_grey.png' %}"); */
+            background-size: 6em ;
+            background-repeat: no-repeat;
+            background-position: right;
+            
+        }
+        .table-dark-bg{
+            background-color: #343a40;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- <div class="row justify-content-center" id="header-row" >
+      <div class="col-12 mt-4 mb-1 py-0" style="height: 6em; align-items: center; align-content: center; " id="header-col" >
+          
+              <div class="col-md-12" style="">
+                 <div class="d-flex justify-content-between">
+                      <div class="col-md-4 mb-0 m-0" style="">
+                          <div class="justify-content-center">
+                            {% if 'global linings' in user_profile.user_company.lower  %}
+                              <img src="https://globallinings.co.nz/static/media/linings_logo.5c127db2.svg" alt="" style="width: 9em; height: 7em; margin-top: -20px; padding: 0px;margin-left: -1em;">
+                            {% else %}
+                            <h3 class="mt-3">{{user_profile.user_company}}</h3>
+                            {% endif %}
+                          </div>
+                          
+                          
+                      </div>
+                      <div class="col-md-4 mb-0 m-0 text-center" style="margin-left: 10em; margin-right: -10em;">
+                        <h4>TIMESHEET</h4>
+                        <p style="font-size: 0.9em;">Period Ended: {{obj.last.date|date:'d/m/Y'}}</p>
+                        <p class="text-xs font-weight-light mt-2" style="font-size: 0.7em; margin-top: -15px;"><strong>Generated on </strong>
+                          <span class="text-primary">novagenesis.co.nz</span>
+                        </p>
+                        
+                      </div>
+                      <div class="col-md-4 text-right " style="">
+                       
+                        <h4>{{user.first_name|title}} {{user.last_name|title}}</h4>
+                        <p class="font-weight-light mt-0 mb-0" style="font-size: 1em;">{{user_profile.user_position}}</p>
+                        
+                        {% if user_profile.user_phone_number %}
+                        <p class="text-xs font-weight-light mt-0 mb-0" style="font-size: 0.8em; "> 
+                          <span class="text-muted">
+                              <i class="fas fa-phone"></i>
+                          </span>
+                          
+                          <span class="">{{user_profile.user_phone_number}}</span>
+                        </p>
+                        {% endif %}
+                          
+                       
+                        <p class="text-xs font-weight-light mt-0 mb-0" style="font-size: 0.8em; "> 
+                            <span class="text-muted">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            
+                            <span class="text-primary">{{user.email}}</span>
+                        </p>
+                        
+                      </div>
+                </div>
+              </div>
+             
+        
+      </div>
+    </div>
+
+   
+    <div style="margin-bottom: 0px" class="row">
+    </div> -->
+
+
+
+    <div class="row justify-content-center shadow mt-0 mb-3" id="header-row" >
+      <div class="col-12 mt-4 mb-1 py-0" style="height: 6em; align-items: center; align-content: center; " id="header-col" >
+          
+              <div class="col-md-12">
+                 <div class="d-flex justify-content-between">
+                      <div class="col-md-4 mb-0 m-0">
+                          <div class="justify-content-center">
+                            <h4>{{user.first_name|title}} {{user.last_name|title}}</h4>
+                            <p class="font-weight-light mt-0 mb-0" style="font-size: 1em;">{{user_profile.user_position}}</p>
+                            
+                            {% if user_profile.user_phone_number %}
+                            <p class="text-xs font-weight-light mt-0 mb-0" style="font-size: 0.8em; "> 
+                              <span class="text-muted">
+                                  <i class="fas fa-phone"></i>
+                              </span>
+                              
+                              <span class="">{{user_profile.user_phone_number}}</span>
+                            </p>
+                            {% endif %}
+                              
+                           
+                            <p class="text-xs font-weight-light mt-0 mb-0" style="font-size: 0.8em; "> 
+                                <span class="text-muted">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                
+                                <span class="text-primary">{{user.email}}</span>
+                            </p>
+                          </div>
+                          
+                      </div>
+                      <div class="col-md-4 mb-0 m-0 " style="margin-left: 10em; margin-right: -10em;">
+                        
+                        <p class="m-0"><strong>Organization:</strong> {{user_profile.user_company}}</p>
+                        <!-- <p class="m-0"><strong>Project: </strong>{% if report.job.job_project %}{{report.job.job_project}}{% else %}{{report.job}}{% endif %}</p> -->
+                        <p class="m-0"><strong>Document type: </strong>Timesheet</p>
+                        <p class="text-xs font-weight-light mt-2" style="font-size: 0.7em; margin-top: -15px;"><strong>Generated on </strong>
+                          <span class="text-primary">novagenesis.co.nz</span>
+                        </p>
+                        
+                      </div>
+                      <div class="col-md-4" >
+                        <!-- <p class="mb-0" style="font-size: 1.6em;">{{user.first_name|title}} {{user.last_name|title}}</p> -->
+                        <p class="m-0"><strong>Document ID:</strong> NGTS-<span>{{timesheet_number}}</span></p>
+                        <!-- <p class="m-0"><strong>Report Type:</strong> Observation</span></p> -->
+                        <p class="m-0"><strong>Period ended:</strong> {{obj.last.date|date:'d/m/Y'}}</span></p>
+                       
+                        
+                        <!-- <p class="text-xs font-weight-light mt-0 mb-0" style="font-size: 0.8em; "> 
+                            <span class="text-muted">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            
+                            <span class="text-primary">{{user.email}}</span>
+                        </p> -->
+                        
+                      </div>
+                </div>
+              </div>
+             
+        
+      </div>
+    </div>
+    
+
+
+<table  class="table table-responsive-xl">
+<thead class="">
+    <tr style="font-size:10px;">
+        <th>Date</th>
+        <th>Client Name</th>
+        <th>Site Address</th>
+        <th>Job#</th>
+        <th>MJS#</th>
+        <th>Details</th>
+        <th>Time in</th>
+        <th>Time Out</th>
+        <th>Hours on Job</th>
+        <th>Day Hours</th>
+        <th>Site Supervisor</th>
+        <th>For Office Use</th>
+        
+    </tr>
+</thead>
+<tbody>
+    
+    {% for obj in obj %}
+    {% if "Leave" in obj.description or 'Holiday' in obj.description or 'Lockdown' in obj.description  %}
+    <tr style="background-color: #e9ecfc" class="p-1">
+            <td class="p-1 text-center">{{obj.date|date:'d/m'}}</td>
+            <td class="p-1">{{obj.description}}</td>
+            <td class="p-1">{{obj.description}}</td>
+            {% if obj.job %}
+            <td class="p-1">{{obj.description}}</a></td>
+            {% else %}
+            <td class="p-1">{{obj.description}}</td>
+            {% endif %}
+            <td class="p-1">{{obj.description}}</td>
+            <td class="p-1">{{obj.description}}</td>
+            {% if obj.time_in %}
+            <td class="p-1">{{obj.time_in|date:'H:i'}}</td>
+            {% else %}
+            <td class="p-1">----</td>
+            {% endif %}
+            {% if obj.time_out %}
+            <td class="p-1">{{obj.time_out|date:'H:i'}}</td>
+            {% else %}
+            <td class="p-1">----</td>
+            {% endif %}
+            {% if obj.break_time %}
+            <td class="p-1">{{obj.getBreak}}</td>
+            {% else %}
+            <td class="p-1">{{obj.getHoras}}</td>
+            {% endif %}
+            <td class="p-1">{{obj.getHoras}}</td>
+            <td class="p-1">-----</td>
+            <td></td>
+            
+
+        </tr>
+
+        {% else %}
+     
+        <tr class="p-1" >
+            <td class="p-1 text-center">{{obj.date|date:'d/m'}}</td>
+            <td class="p-1" style="margin-top: 10px;">{{obj.job.job_client}}</td>
+            <td class="p-1"><span class="">{{obj.job.job_address}}</span></td>
+            {% if obj.job %}
+            <td class="p-1">{{obj.job}}</td>
+            {% else %}
+            <td class="p-1">{{obj.job}}</td>
+            {% endif %}
+            <td class="p-1">{{obj.mjs}}</td>
+            <td class="p-1" class="">{{obj.description}}</td>
+            {% if obj.time_in %}
+            <td class="p-1">{{obj.time_in|date:'H:i'}}</td>
+            {% else %}
+            <td class="p-1">----</td>
+            {% endif %}
+            {% if obj.time_out %}
+            <td class="p-1">{{obj.time_out|date:'H:i'}}</td>
+            {% else %}
+            <td class="p-1">----</td>
+            {% endif %}
+            {% if obj.break_time %}
+            <td class="p-1">{{obj.getBreak}}</td>
+            {% else %}
+            <td class="p-1">{{obj.getHoras}}</td>
+            {% endif %}
+            <td class="p-1">{{obj.getHoras}}</td>
+            <td class="p-1" >{{obj.job.job_supervisor}}</td>
+            <td></td>
+            
+        </tr>
+    {% endif %}
+    
+    {% endfor %}
+   <tr>
+    
+   </tr>
+    
+</tbody>
+{% block total_table %}
+<tbody style="margin: 0px" class="border mt-5" border="0" style="border:none; height: 20px;">
+  <tr>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0"></td>
+    <td class="border-0" colspan="2" style="font-size: .9em;"><b>Total worked hours:</b>  </td>
+    <td class="border-0" style="font-size: .9em;"><b> {{total}}</b></td>
+    <td class="border-0"></td>
+  </tr>
+</tbody>
+{% endblock total_table %}
+
+</table>
+
+<!-- <div class="container">
+  <div class="row justify-content-center">
+
+    {% for key,value in counted_hours.items %}
+    <div class=" col-3 my-1 mx-1 bg-dark py-1" style="align-items: center;">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="p-1">
+          <p class="text-white" style="font-size: .5em;">{{value.0.mjs_job.job_number}}</p>
+          <p class="text-white" style="font-size: .5em;">{{value.0.mjs_number}}</p>
+        </div>
+        <div class="p-1">
+          <p class="text-white" style="font-size: .5em;">{{value.1}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+  </div>
+</div> -->
+
+</body>
+</html>
+
